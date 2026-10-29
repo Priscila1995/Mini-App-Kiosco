@@ -1,7 +1,9 @@
 export default function Footer() {
   return (
-    <footer>
-      <p>Kiosco El Rápido © 2026</p>
+    <footer className="site-footer">
+      <div className="container">
+        <p>Kiosco El Rápido © 2026</p>
+      </div>
     </footer>
   );
 }

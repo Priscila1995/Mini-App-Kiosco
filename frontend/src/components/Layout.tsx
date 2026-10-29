@@ -1,14 +1,15 @@
 import { Outlet } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
 
-// TODO (Persona A): reemplazar por <Header />, <Outlet /> y <Footer />.
 export default function Layout() {
   return (
     <div>
-      <header>Header (placeholder)</header>
+      <Header />
       <main>
         <Outlet />
       </main>
-      <footer>Footer (placeholder)</footer>
+      <Footer />
     </div>
   );
 }

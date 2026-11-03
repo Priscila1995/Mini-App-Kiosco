@@ -4,14 +4,17 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 import models  # noqa: F401  (registra las tablas en Base antes de create_all)
-from database import Base, engine
+from database import Base, SessionLocal, engine
 from routers import orders, products
+from seed import seed_products
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Crea las tablas si no existen al arrancar el servidor
+    # Crea las tablas si no existen y carga los productos iniciales al arrancar
     Base.metadata.create_all(bind=engine)
+    with SessionLocal() as db:
+        seed_products(db)
     yield
 
 

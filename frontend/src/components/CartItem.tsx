@@ -10,6 +10,8 @@ export default function CartItem({ item }: CartItemProps) {
   const { product, quantity } = item;
 
   const handleQuantityChange = (value: string) => {
+    // Input vacío: no tocar el carrito (Number("") daría 0 y eliminaría el ítem).
+    if (value === "") return;
     const next = Number(value);
     if (!Number.isFinite(next)) return;
     updateQuantity(product.id, next);

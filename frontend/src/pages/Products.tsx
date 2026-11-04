@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import CategoryGrid from "../components/CategoryGrid";
 import ProductCard from "../components/ProductCard";
 import { products } from "../data/products";
 import "./Product.css";
@@ -6,72 +7,63 @@ import "./Product.css";
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const category = searchParams.get("category") as 
-  | "bebidas"
-  | "snacks"
-  | "golosinas"
-  | "varios"
-  | null;
+  const category = searchParams.get("category") as
+    | "bebidas"
+    | "snacks"
+    | "golosinas"
+    | "varios"
+    | null;
 
-  const filteredProducts = category
-    ? products.filter(
-        (product) => product.category === category
-      )
-    : products;
+  const query = searchParams.get("q") ?? "";
 
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory = category ? product.category === category : true;
+    const matchesQuery = query
+      ? product.name.toLowerCase().includes(query.toLowerCase())
+      : true;
+    return matchesCategory && matchesQuery;
+  });
 
-  const handleFilter = (value: string) => {
-    if (value === "todos") {
-      setSearchParams({});
+  const handleSearch = (value: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (value.trim()) {
+      next.set("q", value);
     } else {
-      setSearchParams({
-        category: value,
-      });
+      next.delete("q");
     }
+    setSearchParams(next);
   };
 
-
   return (
-    <section className="products-page">
-      <h1 className="products-title">
-          Productos
-      </h1>
+    <section className="products-page container">
+      <header className="page-head">
+        <p className="page-kicker">Catálogo</p>
+        <h1>El mostrador</h1>
+        <p>Elegí, sumá al carrito y listo. Todo lo que un kiosco tiene que tener.</p>
+      </header>
 
+      <CategoryGrid active={category} />
 
-      <div className="filters">
-        <button onClick={() => handleFilter("todos")}>
-          Todos
-        </button>
-
-        <button onClick={() => handleFilter("bebidas")}>
-          Bebidas
-        </button>
-
-        <button onClick={() => handleFilter("snacks")}>
-          Snacks
-        </button>
-
-        <button onClick={() => handleFilter("golosinas")}>
-          Golosinas
-        </button>
-
-        <button onClick={() => handleFilter("varios")}>
-          Varios
-        </button>
+      <div className="catalog-toolbar">
+        <label className="catalog-search">
+          <span className="sr-only">Buscar productos</span>
+          <input
+            type="search"
+            placeholder="Buscar en el mostrador"
+            value={query}
+            onChange={(event) => handleSearch(event.target.value)}
+          />
+        </label>
       </div>
-
 
       <div className="products-grid">
-        {
-          filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-            />
-          ))
-        }
+        {filteredProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
-
+      {filteredProducts.length === 0 ? (
+        <p className="catalog-empty">No hay productos para esa búsqueda.</p>
+      ) : null}
     </section>
   );
 }

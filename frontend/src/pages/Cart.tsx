@@ -1,3 +1,15 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCartDrawer } from "../context/CartDrawerContext";
+
 export default function Cart() {
-  return <h1>Carrito</h1>;
+  const navigate = useNavigate();
+  const { openCart } = useCartDrawer();
+
+  useEffect(() => {
+    openCart();
+    navigate("/products", { replace: true });
+  }, [navigate, openCart]);
+
+  return null;
 }

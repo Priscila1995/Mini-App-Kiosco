@@ -1,17 +1,20 @@
 import { Outlet } from "react-router-dom";
+import { CartDrawerProvider } from "../context/CartDrawerContext";
 import Header from "./Header";
 import Footer from "./Footer";
+import CartDrawer from "./CartDrawer";
 
 export default function Layout() {
   return (
-    <div className="layout">
-      <Header />
-      <main>
-        <div className="container">
+    <CartDrawerProvider>
+      <div className="layout">
+        <Header />
+        <main className="site-main">
           <Outlet />
-        </div>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+        <CartDrawer />
+      </div>
+    </CartDrawerProvider>
   );
 }

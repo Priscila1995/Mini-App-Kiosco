@@ -1,0 +1,30 @@
+:root {
+  --bg: #111111;
+  --surface: #1a1a1a;
+  --card: #202020;
+  --card-lift: #262626;
+  --primary: #f97316;
+  --primary-strong: #ea580c;
+  --secondary: #fb923c;
+  --accent: #f4c14e;
+  --accent-soft: rgba(244, 193, 78, 0.16);
+  --text: #ffffff;
+  --text-muted: #b8b8b8;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --glow: rgba(249, 115, 22, 0.28);
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  --radius: 22px;
+  --radius-sm: 14px;
+  --header-h: 72px;
+
+  --display: "Lilita One", system-ui, sans-serif;
+  --sans: "Nunito", system-ui, sans-serif;
+
+  color-scheme: dark;
+  font: 16px/1.5 var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}

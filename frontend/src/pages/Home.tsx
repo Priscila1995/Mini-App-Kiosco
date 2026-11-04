@@ -1,33 +1,62 @@
 import { Link } from "react-router-dom";
+import ProductCard from "../components/ProductCard";
+import { products } from "../data/products";
+import heroCharacter from "../assets/products/gordo.png";
 import "./Home.css";
 
 export default function Home() {
+  const featured = products.slice(0, 3);
+
   return (
-    <section className="home">
-      <div className="home-content">
-        <span className="home-tag">
-          Kiosco 24/7
-        </span>
+    <div className="home">
+      <section className="hero-stage">
+        <div className="hero-rings" aria-hidden="true" />
+        <div className="hero-glow" aria-hidden="true" />
+        <div className="hero-orb hero-orb-a" aria-hidden="true" />
+        <div className="hero-orb hero-orb-b" aria-hidden="true" />
+        <span className="hero-speck hero-speck-a" aria-hidden="true" />
+        <span className="hero-speck hero-speck-b" aria-hidden="true" />
+        <span className="hero-rule" aria-hidden="true" />
 
-        <h1>
-          Todo lo que querés,
-          <br />
-          cuando lo necesitás.
-        </h1>
+        <div className="hero-copy">
+          <h1>
+            Pensamos en vos
+            <br />
+            y en tus antojos{" "}
+            <span className="hero-247">
+              24/7!
+              <i />
+            </span>
+          </h1>
+          <p className="hero-lead">
+            El mostrador no cierra. Pedí en segundos, pagá al toque y te lo
+            acercamos a donde estés — de madrugada o entre reuniones.
+          </p>
+          <Link className="hero-cta" to="/products">
+            Ver productos
+          </Link>
+        </div>
 
-        <p>
-          Encontrá bebidas, snacks, golosinas y productos varios
-          en un solo lugar.
-        </p>
+        <div className="hero-visual">
+          <div className="hero-halo" aria-hidden="true" />
+          <div className="hero-halo hero-halo-soft" aria-hidden="true" />
+          <div className="hero-figure">
+            <img src={heroCharacter} alt="Personaje del kiosco con antojos" />
+          </div>
+        </div>
+      </section>
 
-        <Link className="home-button" to="/products">
-          Ver productos
-        </Link>
-      </div>
-
-      <div className="home-decoration">
-        🥤 🍟 🍫
-      </div>
-    </section>
+      <section className="container home-section home-section-last">
+        <header className="page-head">
+          <p className="page-kicker">Destacados</p>
+          <h2>Para llevar ahora</h2>
+        </header>
+        <div className="home-featured">
+          {featured.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 import models  # noqa: F401  (registra las tablas en Base antes de create_all)
 from database import Base, SessionLocal, engine
@@ -27,6 +29,23 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(RequestValidationError)
+async def validation_error_handler(request: Request, exc: RequestValidationError):
+    # Pydantic devuelve una lista de errores; la resumimos en un texto legible
+    # para que el front pueda mostrar `detail` directamente.
+    mensajes = []
+    for err in exc.errors():
+        campo = ".".join(str(p) for p in err["loc"] if p not in ("body", "query", "path"))
+        mensajes.append(f"{campo}: {err['msg']}" if campo else err["msg"])
+    return JSONResponse(status_code=422, content={"detail": "; ".join(mensajes)})
+
+
+@app.exception_handler(Exception)
+async def unhandled_error_handler(request: Request, exc: Exception):
+    # Cualquier error no previsto responde 500 con el mismo formato {"detail": ...}
+    return JSONResponse(status_code=500, content={"detail": "Error interno del servidor"})
+
 
 app.include_router(products.router)
 app.include_router(orders.router)

@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { products } from "../data/products";
+import "./Product.css";
 
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,11 +32,13 @@ export default function Products() {
 
 
   return (
-    <section>
-      <h1>Productos</h1>
+    <section className="products-page">
+      <h1 className="products-title">
+          Productos
+      </h1>
 
 
-      <div>
+      <div className="filters">
         <button onClick={() => handleFilter("todos")}>
           Todos
         </button>
@@ -58,7 +61,7 @@ export default function Products() {
       </div>
 
 
-      <div>
+      <div className="products-grid">
         {
           filteredProducts.map((product) => (
             <ProductCard

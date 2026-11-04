@@ -1,0 +1,75 @@
+.products-page {
+
+  padding:40px;
+
+}
+
+
+.products-title {
+
+  color:#F9FAFB;
+
+  font-size:48px;
+
+  margin-bottom:35px;
+
+}
+
+
+
+.filters {
+
+  display:flex;
+
+  gap:15px;
+
+  margin-bottom:40px;
+
+  flex-wrap:wrap;
+
+}
+
+
+
+.filters button {
+
+  background:#1F2937;
+
+  color:#F9FAFB;
+
+  border:1px solid #374151;
+
+  padding:12px 24px;
+
+  border-radius:50px;
+
+  cursor:pointer;
+
+  font-weight:600;
+
+  transition:.3s;
+
+}
+
+
+
+.filters button:hover {
+
+  background:#F97316;
+
+  border-color:#F97316;
+
+}
+
+
+
+.products-grid {
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fill,minmax(260px,1fr));
+
+  gap:25px;
+
+}

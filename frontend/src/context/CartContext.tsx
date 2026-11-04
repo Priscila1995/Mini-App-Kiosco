@@ -20,7 +20,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Si el producto ya esta en el carrito suma la cantidad (sin superar el stock).
   const addToCart = (product: Product, quantity: number) => {
-    if (quantity <= 0) return;
+    if (quantity <= 0 || product.stock <= 0) return;
     setItems((prev) => {
       const existing = prev.find((item) => item.product.id === product.id);
       if (!existing) {

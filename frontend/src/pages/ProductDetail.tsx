@@ -36,7 +36,8 @@ export default function ProductDetail() {
       })
       .catch((err) => {
         if (cancelled) return;
-        if (err instanceof ApiError && err.status === 404) setNotFound(true);
+        // 404: no existe; 422: el id no es un número (ej: /products/abc)
+        if (err instanceof ApiError && (err.status === 404 || err.status === 422)) setNotFound(true);
         else setError(true);
       })
       .finally(() => {

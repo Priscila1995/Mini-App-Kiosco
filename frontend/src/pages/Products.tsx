@@ -6,16 +6,15 @@ import ProductsFeedback from "../components/ProductsFeedback";
 import { useProducts } from "../hooks/useProducts";
 import "./Product.css";
 
+const CATEGORIAS = ["bebidas", "snacks", "golosinas", "varios"] as const;
+
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
   const resultsRef = useRef<HTMLDivElement>(null);
 
-  const category = searchParams.get("category") as
-    | "bebidas"
-    | "snacks"
-    | "golosinas"
-    | "varios"
-    | null;
+  // Si la categoría de la URL no existe se ignora y se muestran todos los productos
+  const rawCategory = searchParams.get("category");
+  const category = CATEGORIAS.find((c) => c === rawCategory) ?? null;
 
   const query = searchParams.get("q") ?? "";
 

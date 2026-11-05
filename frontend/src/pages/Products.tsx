@@ -1,3 +1,4 @@
+import { useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import CategoryGrid from "../components/CategoryGrid";
 import ProductCard from "../components/ProductCard";
@@ -6,6 +7,7 @@ import "./Product.css";
 
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const category = searchParams.get("category") as
     | "bebidas"
@@ -23,6 +25,14 @@ export default function Products() {
       : true;
     return matchesCategory && matchesQuery;
   });
+
+  const scrollToResults = useCallback(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    resultsRef.current?.scrollIntoView({
+      behavior: reduceMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  }, []);
 
   const handleSearch = (value: string) => {
     const next = new URLSearchParams(searchParams);
@@ -42,7 +52,7 @@ export default function Products() {
         <p>Elegí, sumá al carrito y listo. Todo lo que un kiosco tiene que tener.</p>
       </header>
 
-      <CategoryGrid active={category} />
+      <CategoryGrid active={category} onSelect={scrollToResults} />
 
       <div className="catalog-toolbar">
         <label className="catalog-search">
@@ -56,14 +66,16 @@ export default function Products() {
         </label>
       </div>
 
-      <div className="products-grid">
-        {filteredProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+      <div className="catalog-results" ref={resultsRef}>
+        <div className="products-grid">
+          {filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+        {filteredProducts.length === 0 ? (
+          <p className="catalog-empty">No hay productos para esa búsqueda.</p>
+        ) : null}
       </div>
-      {filteredProducts.length === 0 ? (
-        <p className="catalog-empty">No hay productos para esa búsqueda.</p>
-      ) : null}
     </section>
   );
 }

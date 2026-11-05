@@ -4,9 +4,10 @@ import "./CategoryGrid.css";
 
 interface CategoryGridProps {
   active?: string | null;
+  onSelect?: () => void;
 }
 
-export default function CategoryGrid({ active }: CategoryGridProps) {
+export default function CategoryGrid({ active, onSelect }: CategoryGridProps) {
   const [searchParams] = useSearchParams();
 
   const toCategory = (slug: string) => {
@@ -30,6 +31,7 @@ export default function CategoryGrid({ active }: CategoryGridProps) {
           key={category.slug}
           className={`category-card${isActive(category.slug) ? " is-active" : ""}`}
           to={toCategory(category.slug)}
+          onClick={onSelect}
         >
           <div className="category-visual">
             <img src={category.image} alt="" />

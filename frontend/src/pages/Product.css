@@ -36,3 +36,12 @@
   margin-top: 12px;
   color: var(--text-muted);
 }
+
+.catalog-error {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--text);
+}

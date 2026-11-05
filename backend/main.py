@@ -22,10 +22,12 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Kiosco El Rápido API", lifespan=lifespan)
 
-# CORS: permite que el frontend de Vite consuma la API desde otro origen
+# CORS: permite que el frontend de Vite consuma la API desde otro origen.
+# Además del puerto 5173, acepta cualquier puerto de localhost (por si Vite cambia de puerto).
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_methods=["*"],
     allow_headers=["*"],
 )

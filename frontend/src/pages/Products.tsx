@@ -2,7 +2,8 @@ import { useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import CategoryGrid from "../components/CategoryGrid";
 import ProductCard from "../components/ProductCard";
-import { products } from "../data/products";
+import ProductsFeedback from "../components/ProductsFeedback";
+import { useProducts } from "../hooks/useProducts";
 import "./Product.css";
 
 export default function Products() {
@@ -18,13 +19,12 @@ export default function Products() {
 
   const query = searchParams.get("q") ?? "";
 
-  const filteredProducts = products.filter((product) => {
-    const matchesCategory = category ? product.category === category : true;
-    const matchesQuery = query
-      ? product.name.toLowerCase().includes(query.toLowerCase())
-      : true;
-    return matchesCategory && matchesQuery;
-  });
+  // La categoría se filtra en el backend (?category=); la búsqueda es local
+  const { products, loading, error, reload } = useProducts(category);
+
+  const filteredProducts = products.filter((product) =>
+    query ? product.name.toLowerCase().includes(query.toLowerCase()) : true,
+  );
 
   const scrollToResults = useCallback(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -72,7 +72,8 @@ export default function Products() {
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        {filteredProducts.length === 0 ? (
+        <ProductsFeedback loading={loading} error={error} onRetry={reload} />
+        {!loading && !error && filteredProducts.length === 0 ? (
           <p className="catalog-empty">No hay productos para esa búsqueda.</p>
         ) : null}
       </div>

@@ -9,12 +9,12 @@ INITIAL_PRODUCTS = [
     {"name": "Coca-Cola 500ml", "category": "bebidas", "price": 1200, "stock": 25, "description": "Gaseosa clásica"},
     {"name": "Agua mineral 500ml", "category": "bebidas", "price": 800, "stock": 40, "description": "Agua sin gas"},
     {"name": "Papas Lays Clásicas", "category": "snacks", "price": 1500, "stock": 30, "description": "Papas fritas clásicas"},
-    {"name": "Alfajor Jorgito", "category": "golosinas", "price": 900, "stock": 50, "description": "Alfajor de chocolate"},
-    {"name": "Chicles Beldent", "category": "golosinas", "price": 600, "stock": 60, "description": "Pack de chicles"},
+    {"name": "Alfajor Jorgelín", "category": "golosinas", "price": 900, "stock": 50, "description": "Alfajor de chocolate"},
+    {"name": "Chicles Trident", "category": "golosinas", "price": 600, "stock": 60, "description": "Pack de chicles"},
     {"name": "Cigarrillos", "category": "varios", "price": 2500, "stock": 20, "description": "Atado de cigarrillos"},
     {"name": "Gatorade 500ml", "category": "bebidas", "price": 1800, "stock": 15, "description": "Bebida isotónica"},
     {"name": "Maní salado", "category": "snacks", "price": 1100, "stock": 35, "description": "Maní tostado con sal"},
-    {"name": "Pastillas Mentho-Plus", "category": "golosinas", "price": 700, "stock": 45, "description": "Caramelos de menta"},
+    {"name": "Pastillas Mynthon", "category": "golosinas", "price": 700, "stock": 45, "description": "Caramelos de menta"},
     {"name": "Encendedor", "category": "varios", "price": 1000, "stock": 30, "description": "Encendedor descartable"},
 ]
 

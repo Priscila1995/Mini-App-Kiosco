@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from models import Product
 from schemas import ProductBase
 
-# Mismos productos que frontend/src/data/products.ts (en ese orden, así los ids coinciden)
+# Productos iniciales (ids 1-10). Las fotos del front se mapean por id en productImages.ts.
 INITIAL_PRODUCTS = [
     {"name": "Coca-Cola 500ml", "category": "bebidas", "price": 1200, "stock": 25, "description": "Gaseosa clásica"},
     {"name": "Agua mineral 500ml", "category": "bebidas", "price": 800, "stock": 40, "description": "Agua sin gas"},

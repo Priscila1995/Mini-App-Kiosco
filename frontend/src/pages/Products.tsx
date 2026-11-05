@@ -49,7 +49,7 @@ export default function Products() {
       <header className="page-head">
         <p className="page-kicker">Catálogo</p>
         <h1>El mostrador</h1>
-        <p>Elegí, sumá al carrito y listo. Todo lo que un kiosco tiene que tener.</p>
+        <p>Llená el carrito con lo que necesites y nosotros nos encargamos del resto.</p>
       </header>
 
       <CategoryGrid active={category} onSelect={scrollToResults} />

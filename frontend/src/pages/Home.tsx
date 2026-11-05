@@ -27,12 +27,10 @@ export default function Home() {
             y en tus antojos{" "}
             <span className="hero-247">
               24/7!
-              <i />
             </span>
           </h1>
           <p className="hero-lead">
-            El mostrador no cierra. Pedí en segundos, pagá al toque y te lo
-            acercamos a donde estés — de madrugada o entre reuniones.
+            Sabemos que los antojos no tienen horarios específicos, por eso estamos siempre disponibles con todo lo que te gusta!
           </p>
           <Link className="hero-cta" to="/products">
             Ver productos
@@ -56,7 +54,9 @@ export default function Home() {
         <ProductsFeedback loading={loading} error={error} onRetry={reload} />
         <div className="home-featured">
           {featured.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <div key={product.id} className="home-featured-item">
+              <ProductCard product={product} />
+            </div>
           ))}
         </div>
       </section>

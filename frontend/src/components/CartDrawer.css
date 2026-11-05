@@ -98,6 +98,14 @@
   font-size: 1.25rem;
 }
 
+.cart-sheet-error {
+  margin: 0 0 12px;
+  color: #f87171;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: left;
+}
+
 .cart-sheet-list {
   margin: 0;
   padding: 4px 22px 8px;

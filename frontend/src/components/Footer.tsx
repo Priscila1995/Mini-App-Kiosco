@@ -9,18 +9,18 @@ export default function Footer() {
             <span className="brand-mark" aria-hidden="true">R</span>
             Kiosco El Rápido
           </p>
-          <p className="footer-tagline">Tus antojos favoritos, siempre cerca.</p>
+          <p className="footer-tagline">Tus antojos favoritos, siempre cerca y a cualquier hora!</p>
         </div>
 
         <div className="footer-block">
           <p className="footer-label">Ubicación</p>
-          <p>Av. Independencia 245</p>
+          <p>San Martin 1245</p>
+          <p>Tel: 3865 - 234589</p>
           <p>Concepción, Tucumán, Argentina</p>
-          <p className="footer-note">Dirección de ejemplo para el proyecto.</p>
         </div>
 
         <div className="footer-block">
-          <p className="footer-label">Desarrollado por</p>
+          <p className="footer-label">Desarrolladores</p>
           <ul className="footer-devs">
             <li>Gonzalez Ricardo Joaquin</li>
             <li>Romero Priscila</li>

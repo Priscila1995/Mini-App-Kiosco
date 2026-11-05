@@ -1,27 +1,17 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CartItem from "../components/CartItem";
 import { useCart } from "../context/CartContext";
+import { useCheckout } from "../hooks/useCheckout";
 import { formatPrice } from "../utils/format";
 import "./Cart.css";
 
 export default function Cart() {
-  const { items, totalPrice, totalItems, clearCart } = useCart();
-  const [successMessage, setSuccessMessage] = useState("");
-
-  useEffect(() => {
-    if (items.length > 0) setSuccessMessage("");
-  }, [items.length]);
+  const { items, totalPrice, clearCart } = useCart();
+  const { successMessage, errorMessage, submitting, checkout, clearMessages } = useCheckout();
 
   const handleClear = () => {
     clearCart();
-    setSuccessMessage("");
-  };
-
-  const handleCheckout = () => {
-    if (totalItems === 0) return;
-    clearCart();
-    setSuccessMessage("Pedido realizado con éxito.");
+    clearMessages();
   };
 
   return (
@@ -32,6 +22,7 @@ export default function Cart() {
       </header>
 
       {successMessage ? <p className="cart-success">{successMessage}</p> : null}
+      {errorMessage ? <p className="cart-error" role="alert">{errorMessage}</p> : null}
 
       {items.length === 0 ? (
         !successMessage ? <p className="cart-empty">El carrito está vacío.</p> : null
@@ -48,11 +39,16 @@ export default function Cart() {
             Total <strong>{formatPrice(totalPrice)}</strong>
           </p>
           <div className="cart-page-actions">
-            <button type="button" className="btn btn-ghost" onClick={handleClear}>
+            <button type="button" className="btn btn-ghost" onClick={handleClear} disabled={submitting}>
               Vaciar carrito
             </button>
-            <button type="button" className="btn btn-primary" onClick={handleCheckout}>
-              Finalizar pedido
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => void checkout()}
+              disabled={submitting}
+            >
+              {submitting ? "Enviando pedido..." : "Finalizar pedido"}
             </button>
           </div>
         </>

@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { products } from "../data/products";
+import { ApiError, getProductById } from "../api/client";
 import { useCart } from "../context/CartContext";
 import { useCartDrawer } from "../context/CartDrawerContext";
+import type { Product } from "../types";
 import { formatPrice } from "../utils/format";
 import QuantityControl from "../components/QuantityControl";
+import ProductsFeedback from "../components/ProductsFeedback";
 import "./ProductDetail.css";
 
 export default function ProductDetail() {
@@ -12,10 +14,49 @@ export default function ProductDetail() {
   const { addToCart } = useCart();
   const { openCart } = useCartDrawer();
   const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
-  const product = products.find((item) => item.id === Number(id));
+  useEffect(() => {
+    if (!id) return;
+    let cancelled = false;
+    setLoading(true);
+    setError(false);
+    setNotFound(false);
+    setProduct(null);
 
-  if (!product) {
+    getProductById(id)
+      .then((data) => {
+        if (cancelled) return;
+        setProduct(data);
+        setQuantity(1);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        if (err instanceof ApiError && err.status === 404) setNotFound(true);
+        else setError(true);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, attempt]);
+
+  if (loading || error) {
+    return (
+      <section className="container empty-state">
+        <ProductsFeedback loading={loading} error={error} onRetry={() => setAttempt((n) => n + 1)} />
+      </section>
+    );
+  }
+
+  if (notFound || !product) {
     return (
       <section className="container empty-state">
         <p className="page-kicker">404</p>

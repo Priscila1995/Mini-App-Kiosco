@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { getProducts } from "../api/client";
 import { useCart } from "../context/CartContext";
 import { useCartDrawer } from "../context/CartDrawerContext";
-import { products } from "../data/products";
+import { useCheckout } from "../hooks/useCheckout";
+import type { Product } from "../types";
 import { formatPrice } from "../utils/format";
 import "./CartDrawer.css";
 
@@ -9,9 +11,10 @@ export default function CartDrawer() {
   const { isOpen, closeCart } = useCartDrawer();
   const { items, addToCart, removeFromCart, updateQuantity, clearCart, totalItems, totalPrice } =
     useCart();
-  const [successMessage, setSuccessMessage] = useState("");
+  const { successMessage, errorMessage, submitting, checkout, clearMessages } = useCheckout();
+  const [catalog, setCatalog] = useState<Product[]>([]);
 
-  const suggestions = products
+  const suggestions = catalog
     .filter((product) => !items.some((item) => item.product.id === product.id))
     .slice(0, 3);
 
@@ -29,18 +32,15 @@ export default function CartDrawer() {
   }, [isOpen, closeCart]);
 
   useEffect(() => {
-    if (items.length > 0) setSuccessMessage("");
-  }, [items.length]);
+    if (!isOpen) return;
+    getProducts()
+      .then(setCatalog)
+      .catch(() => setCatalog([]));
+  }, [isOpen]);
 
   const handleClear = () => {
     clearCart();
-    setSuccessMessage("");
-  };
-
-  const handleCheckout = () => {
-    if (totalItems === 0) return;
-    clearCart();
-    setSuccessMessage("Pedido realizado con éxito.");
+    clearMessages();
   };
 
   return (
@@ -145,6 +145,11 @@ export default function CartDrawer() {
         </div>
 
         <footer className="cart-sheet-foot">
+          {errorMessage ? (
+            <p className="cart-sheet-error" role="alert">
+              {errorMessage}
+            </p>
+          ) : null}
           <div className="cart-sheet-total">
             <span>Total</span>
             <strong>{formatPrice(totalPrice)}</strong>
@@ -152,7 +157,7 @@ export default function CartDrawer() {
           <button
             type="button"
             className="cart-clear"
-            disabled={items.length === 0}
+            disabled={items.length === 0 || submitting}
             onClick={handleClear}
           >
             Vaciar carrito
@@ -160,10 +165,10 @@ export default function CartDrawer() {
           <button
             type="button"
             className="cart-checkout"
-            disabled={totalItems === 0}
-            onClick={handleCheckout}
+            disabled={totalItems === 0 || submitting}
+            onClick={() => void checkout()}
           >
-            Finalizar pedido
+            {submitting ? "Enviando pedido..." : "Finalizar pedido"}
           </button>
         </footer>
       </aside>

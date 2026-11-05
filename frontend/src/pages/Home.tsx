@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
-import { products } from "../data/products";
+import ProductsFeedback from "../components/ProductsFeedback";
+import { useProducts } from "../hooks/useProducts";
 import heroCharacter from "../assets/products/gordo.png";
 import "./Home.css";
 
 export default function Home() {
+  const { products, loading, error, reload } = useProducts();
   const featured = products.slice(0, 3);
 
   return (
@@ -51,6 +53,7 @@ export default function Home() {
           <p className="page-kicker">Destacados</p>
           <h2>Para llevar ahora</h2>
         </header>
+        <ProductsFeedback loading={loading} error={error} onRetry={reload} />
         <div className="home-featured">
           {featured.map((product) => (
             <ProductCard key={product.id} product={product} />

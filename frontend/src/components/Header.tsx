@@ -1,10 +1,8 @@
 import { Link, NavLink } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { useCartDrawer } from "../context/CartDrawerContext";
 
 export default function Header() {
   const { totalItems } = useCart();
-  const { openCart } = useCartDrawer();
 
   return (
     <header className="site-header">
@@ -28,7 +26,7 @@ export default function Header() {
             </svg>
             <span className="nav-products-label">Productos</span>
           </NavLink>
-          <button type="button" className="cart-link" aria-label="Carrito" onClick={openCart}>
+          <NavLink to="/cart" className="cart-link" aria-label={`Carrito (${totalItems})`}>
             <svg viewBox="0 0 24 24" aria-hidden="true" className="cart-icon">
               <path
                 d="M6 7h15l-1.4 8.4a2 2 0 0 1-2 1.6H9.2a2 2 0 0 1-2-1.6L5 4H3"
@@ -41,9 +39,9 @@ export default function Header() {
               <circle cx="9" cy="20" r="1.3" fill="currentColor" />
               <circle cx="18" cy="20" r="1.3" fill="currentColor" />
             </svg>
-            <span className="cart-label">Carrito</span>
+            <span className="cart-label">Carrito ({totalItems})</span>
             {totalItems > 0 ? <span className="cart-badge">{totalItems}</span> : null}
-          </button>
+          </NavLink>
         </nav>
       </div>
     </header>

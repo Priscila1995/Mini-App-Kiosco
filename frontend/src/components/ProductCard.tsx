@@ -29,7 +29,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <button
           type="button"
           className="product-add"
-          aria-label={`Agregar ${product.name}`}
+          aria-label={`Agregar al carrito ${product.name}`}
           onClick={() => {
             addToCart(product, 1);
             openCart();

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useCartDrawer } from "../context/CartDrawerContext";
 import { products } from "../data/products";
@@ -7,8 +7,9 @@ import "./CartDrawer.css";
 
 export default function CartDrawer() {
   const { isOpen, closeCart } = useCartDrawer();
-  const { items, addToCart, removeFromCart, updateQuantity, totalItems, totalPrice } =
+  const { items, addToCart, removeFromCart, updateQuantity, clearCart, totalItems, totalPrice } =
     useCart();
+  const [successMessage, setSuccessMessage] = useState("");
 
   const suggestions = products
     .filter((product) => !items.some((item) => item.product.id === product.id))
@@ -27,6 +28,21 @@ export default function CartDrawer() {
     };
   }, [isOpen, closeCart]);
 
+  useEffect(() => {
+    if (items.length > 0) setSuccessMessage("");
+  }, [items.length]);
+
+  const handleClear = () => {
+    clearCart();
+    setSuccessMessage("");
+  };
+
+  const handleCheckout = () => {
+    if (totalItems === 0) return;
+    clearCart();
+    setSuccessMessage("Pedido realizado con éxito.");
+  };
+
   return (
     <div
       className={`cart-drawer${isOpen ? " is-open" : ""}`}
@@ -43,7 +59,9 @@ export default function CartDrawer() {
         </header>
 
         <div className="cart-sheet-body">
-          {items.length === 0 ? (
+          {successMessage ? (
+            <p className="cart-sheet-success">{successMessage}</p>
+          ) : items.length === 0 ? (
             <p className="cart-sheet-empty">Tu bolsa está vacía. Sumá algo de la góndola.</p>
           ) : (
             <ul className="cart-sheet-list">
@@ -100,7 +118,7 @@ export default function CartDrawer() {
             </ul>
           )}
 
-          {suggestions.length > 0 ? (
+          {!successMessage && suggestions.length > 0 ? (
             <section className="cart-suggest">
               <h3>Te puede interesar</h3>
               <div className="cart-suggest-row">
@@ -131,8 +149,21 @@ export default function CartDrawer() {
             <span>Total</span>
             <strong>{formatPrice(totalPrice)}</strong>
           </div>
-          <button type="button" className="cart-checkout" disabled={totalItems === 0}>
-            Continuar
+          <button
+            type="button"
+            className="cart-clear"
+            disabled={items.length === 0}
+            onClick={handleClear}
+          >
+            Vaciar carrito
+          </button>
+          <button
+            type="button"
+            className="cart-checkout"
+            disabled={totalItems === 0}
+            onClick={handleCheckout}
+          >
+            Finalizar pedido
           </button>
         </footer>
       </aside>
